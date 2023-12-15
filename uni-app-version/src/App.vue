@@ -22,7 +22,7 @@
 </template>
 <script lang="ts" setup>
 import { useClipboard } from "@vueuse/core";
-import { ref, watchEffect } from "vue";
+import { ref, watchEffect, onMounted } from "vue";
 import {
   Select,
   SelectContent,
@@ -31,32 +31,51 @@ import {
   SelectValue,
 } from "@/components/ui/select/index";
 import { Button } from "@/components/ui/button/index";
+import { getVersions, parseVersion, type IVersionInfo } from "./model";
 
 const source = ref("npx @dcloudio/uvm@latest abc");
 const { copy, copied } = useClipboard({ source });
 
-const version = ref("vue3");
+const version = ref("");
 
 const setCopy = () => {
   copy(source.value);
 };
+let versions: IVersionInfo[] = [];
 
 watchEffect(() => {
+  let arr: IVersionInfo[] = [];
+
   if (version.value === "vue3") {
-    source.value = "npx @dcloudio/uvm@latest vue3";
+    arr = versions.filter((item) => item.isVue3 && !item.version.includes("alpha"));
   } else if (version.value === "vue3-alpha") {
-    source.value = "npx @dcloudio/uvm@latest vue3-alpha";
+    arr = versions.filter((item) => item.isVue3 && item.version.includes("alpha"));
   } else if (version.value === "vue2") {
-    source.value = "npx @dcloudio/uvm@latest vue2";
+    arr = versions.filter((item) => item.isVue2 && !item.version.includes("alpha"));
   } else if (version.value === "vue2-alpha") {
-    source.value = "npx @dcloudio/uvm@latest vue2-alpha";
+    arr = versions.filter((item) => item.isVue2 && item.version.includes("alpha"));
   }
+  const latest = Math.max(...arr.map((i) => i.buildTimeStamp));
+
+  const final = arr
+    .filter((i) => i.buildTimeStamp === latest)
+    .sort((a, b) => Number(a.times) - Number(b.times));
+
+  source.value = "npx @dcloudio/uvm@latest " + final[0]?.rawVersion ?? "";
 });
 
 watchEffect(() => {
   if (copied.value) {
     alert("Copied!");
   }
+});
+
+onMounted(async () => {
+  const _versions = await getVersions();
+
+  const versionInfos = _versions.map((item) => parseVersion(item));
+  console.log(versionInfos);
+  versions = versionInfos;
 });
 </script>
 
