@@ -39,6 +39,10 @@ export type IVersionInfo = typeof DEMO_RETURN;
  * @return VersionInfo
  */
 export function parseVersion(version: string): IVersionInfo {
+  // if (version.includes("2.0.2-alpha-309012023098")) {
+  //   debugger;
+  // }
+
   const versionInfo: IVersionInfo = {
     version: "",
     isVue3: false,
@@ -103,7 +107,7 @@ export function parseVersion(version: string): IVersionInfo {
     versionInfo.ideVersion = ideVersion;
     versionInfo.ideVersionRaw = ideVersionRaw;
     versionInfo.buildAt = buildAt.replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3");
-    versionInfo.buildTimeStamp = new Date(versionInfo.buildAt).getTime();
+    versionInfo.buildTimeStamp = new Date(versionInfo.buildAt).getTime() || -1;
     versionInfo.times = times;
   } else if (lastVersionSplitLength === isOldVersionLength) {
     // 36920221121001 按照 369-20221121-001 进行分割
@@ -117,7 +121,8 @@ export function parseVersion(version: string): IVersionInfo {
     versionInfo.ideVersion = ideVersion;
     versionInfo.ideVersionRaw = ideVersionRaw;
     versionInfo.buildAt = buildAt.replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3");
-    versionInfo.buildTimeStamp = new Date(versionInfo.buildAt).getTime();
+    // 历史上有过错误的日期，这里设置为 -1
+    versionInfo.buildTimeStamp = new Date(versionInfo.buildAt).getTime() || -1;
     versionInfo.times = times;
   } else {
     // log 未处理情况

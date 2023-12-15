@@ -33,7 +33,7 @@ import {
 import { Button } from "@/components/ui/button/index";
 import { getVersions, parseVersion, type IVersionInfo } from "./model";
 
-const source = ref("npx @dcloudio/uvm@latest abc");
+const source = ref("npx @dcloudio/uvm@latest");
 const { copy, copied } = useClipboard({ source });
 
 const version = ref("");
@@ -46,6 +46,7 @@ let versions: IVersionInfo[] = [];
 watchEffect(() => {
   let arr: IVersionInfo[] = [];
 
+  // debugger
   if (version.value === "vue3") {
     arr = versions.filter((item) => item.isVue3 && !item.version.includes("alpha"));
   } else if (version.value === "vue3-alpha") {
@@ -53,7 +54,11 @@ watchEffect(() => {
   } else if (version.value === "vue2") {
     arr = versions.filter((item) => item.isVue2 && !item.version.includes("alpha"));
   } else if (version.value === "vue2-alpha") {
+    // debugger;
     arr = versions.filter((item) => item.isVue2 && item.version.includes("alpha"));
+  } else {
+    source.value = "Please select Vue's version";
+    return;
   }
   const latest = Math.max(...arr.map((i) => i.buildTimeStamp));
 
