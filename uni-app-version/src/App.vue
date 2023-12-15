@@ -6,13 +6,14 @@
         <SelectValue placeholder="Select version" />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="v1">Version 1.0</SelectItem>
-        <SelectItem value="v2">Version 2.0</SelectItem>
-        <SelectItem value="v3">Version 3.0</SelectItem>
+        <SelectItem value="v1">Vue3</SelectItem>
+        <SelectItem value="v2">Vue3 Alpha</SelectItem>
+        <SelectItem value="v3">Vue2</SelectItem>
+        <SelectItem value="v4">Vue2 Alpha</SelectItem>
       </SelectContent>
     </Select>
     <Button className="bg-green-500 text-white rounded-lg px-5 py-2">Confirm</Button>
-    <h2 className="text-2xl font-semibold text-white">Select your preferred version</h2>
+    <h2 className="text-2xl font-semibold text-white underline">npx @dcloudio/uvm abc</h2>
   </div>
 </template>
 <script lang="ts" setup>
@@ -22,8 +23,8 @@ import {
   SelectItem,
   SelectContent,
   Select,
-} from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
+} from "@/components/ui/select/index";
+import { Button } from "@/components/ui/button/index";
 </script>
 
 <style></style>
