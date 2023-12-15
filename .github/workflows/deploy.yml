@@ -24,11 +24,10 @@ jobs:
           node-version: "20.x"
           cache: "pnpm"
 
-      - name: Install pnpm
-        run: npm install -g pnpm
-
       - name: Install Dependencies
-        run: pnpm install
+        run: |
+          cd uni-app-version
+          pnpm install
 
       - name: Build
         run: npm run build
