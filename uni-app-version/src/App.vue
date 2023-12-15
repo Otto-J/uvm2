@@ -66,7 +66,7 @@ watchEffect(() => {
     .filter((i) => i.buildTimeStamp === latest)
     .sort((a, b) => Number(a.times) - Number(b.times));
 
-  source.value = "npx @dcloudio/uvm@latest " + final[0]?.rawVersion ?? "";
+  source.value = "npx @dcloudio/uvm@latest " + (final[0]?.rawVersion ?? "");
 });
 
 watchEffect(() => {
